@@ -1,0 +1,51 @@
+<%- include('_header', { title: 'PC 貸出申請', user }) %>
+<div class="card">
+  <h1>PC 貸出申請</h1>
+
+  <% if (flash && flash.text) { %>
+    <div class="banner <%= flash.type || 'error' %>" id="flash"><%= flash.text %></div>
+  <% } %>
+  <% if (banner) { %>
+    <%# E-07 のみ黄色(案内)。ほかの申請不可・エラーは赤 %>
+    <div class="banner <%= banner.id === 'E-07' ? 'warning' : 'error' %>" id="banner"><%= banner.text %></div>
+  <% } else if (noDevices) { %>
+    <div class="banner warning" id="banner">現在貸出できるノートPCはありません。しばらくしてからもう一度ご確認ください。</div>
+  <% } %>
+
+  <form method="post" action="/lendings/confirm" autocomplete="off">
+    <div class="row">
+      <label class="name" for="device_id">機種</label>
+      <% if (noDevices) { %>
+        <div class="empty">選択できる機種がありません</div>
+      <% } else { %>
+        <select name="device_id" id="device_id" required>
+          <option value="">選択してください</option>
+          <% devices.forEach((d) => { %>
+            <option value="<%= d.id %>" <%= String(values.deviceId) === String(d.id) ? 'selected' : '' %>><%= d.asset_no %>（<%= d.model_name %>）</option>
+          <% }) %>
+        </select>
+      <% } %>
+    </div>
+
+    <div class="row">
+      <label class="name" for="due_date">返却予定日</label>
+      <input type="text" name="due_date" id="due_date" placeholder="2026/08/05"
+             value="<%= values.dueDate || '' %>" class="<%= inline.dueDate ? 'has-error' : '' %>">
+      <div class="hint">明日から14日以内（土日は不可）</div>
+      <% if (inline.dueDate) { %><div class="inline-error" id="err-due_date"><%= inline.dueDate.text %></div><% } %>
+    </div>
+
+    <div class="row">
+      <label class="name" for="purpose">利用目的</label>
+      <input type="text" name="purpose" id="purpose"
+             value="<%= values.purpose || '' %>" class="<%= inline.purpose ? 'has-error' : '' %>">
+      <div class="hint">100文字以内</div>
+      <% if (inline.purpose) { %><div class="inline-error" id="err-purpose"><%= inline.purpose.text %></div><% } %>
+    </div>
+
+    <div class="actions">
+      <button type="submit" id="submit" <%= (blocked || noDevices) ? 'disabled' : '' %>>貸出する</button>
+    </div>
+  </form>
+</div>
+<%- include('_footer') %>

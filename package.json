@@ -1,0 +1,20 @@
+{
+  "name": "gate5",
+  "version": "1.0.0",
+  "description": "PC貸出処理(例外系補完版)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "seed": "node src/seed.js",
+    "seed:empty": "node src/seed.js empty",
+    "db": "node src/show-db.js",
+    "test": "node test/scenarios.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}

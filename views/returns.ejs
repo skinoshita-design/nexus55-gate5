@@ -1,0 +1,35 @@
+<%- include('_header', { title: 'PC 返却', user }) %>
+<div class="card">
+  <h1>PC 返却</h1>
+
+  <% if (flash && flash.text) { %>
+    <div class="banner <%= flash.type || 'error' %>" id="flash"><%= flash.text %></div>
+  <% } %>
+
+  <% if (lendings.length === 0) { %>
+    <%# V-08:0 件のときは案内を表示し、ボタンを非活性にする %>
+    <div class="empty" id="empty">返却する端末はありません</div>
+    <div class="actions"><button type="button" disabled>返却する</button></div>
+  <% } else { %>
+    <form method="post" action="/returns">
+      <div class="row"><strong>借りている端末</strong></div>
+      <% lendings.forEach((l, i) => { %>
+        <div class="lending-item">
+          <label>
+            <input type="radio" name="lending_id" value="<%= l.id %>" <%= i === 0 ? 'checked' : '' %>>
+            <span>
+              <strong><%= l.asset_no %>（<%= l.model_name %>）</strong>
+              <%# V-09:延滞は「延滞 N日」を赤バッジ。返却予定日の当日は表示しない %>
+              <% if (l.overdueDays > 0) { %><span class="badge overdue">延滞 <%= l.overdueDays %>日</span><% } %>
+              <div class="meta">貸出日時 <%= l.lentAtLabel %></div>
+              <div class="meta">返却予定日 <%= l.dueDateLabel %></div>
+              <div class="meta">利用目的 <%= l.purpose %></div>
+            </span>
+          </label>
+        </div>
+      <% }) %>
+      <div class="actions"><button type="submit" id="return">返却する</button></div>
+    </form>
+  <% } %>
+</div>
+<%- include('_footer') %>

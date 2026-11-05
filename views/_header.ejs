@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> - PC貸出</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <span class="brand">IT資産管理 / PC貸出</span>
+  <nav>
+    <a href="/lendings/new">貸出申請</a>
+    <a href="/returns">返却</a>
+  </nav>
+  <span class="who">
+    <% if (user) { %>ログイン中：<%= user.name %>（<%= user.employee_code %>）<% } else { %>未ログイン<% } %>
+  </span>
+</header>
+<main>

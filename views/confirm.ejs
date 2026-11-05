@@ -1,0 +1,26 @@
+<%- include('_header', { title: '貸出内容の確認', user }) %>
+<div class="card">
+  <h1>貸出内容の確認</h1>
+  <dl class="confirm">
+    <dt>機種</dt><dd><%= device.asset_no %>（<%= device.model_name %>）</dd>
+    <dt>返却予定日</dt><dd><%= dueDate %></dd>
+    <dt>利用目的</dt><dd><%= purpose %></dd>
+  </dl>
+
+  <%# 確定で送るのは確認トークンのみ(R-15)。V-05:押下後はボタンを非活性にして「処理中…」と表示 %>
+  <form method="post" action="/lendings/commit" id="commitForm">
+    <input type="hidden" name="token" value="<%= token %>">
+    <div class="actions">
+      <a class="button secondary" href="/lendings/new?restore=<%= token %>">戻る</a>
+      <button type="submit" id="commit">確定</button>
+    </div>
+  </form>
+</div>
+<script>
+  document.getElementById('commitForm').addEventListener('submit', function () {
+    var b = document.getElementById('commit');
+    // 送信内容を確定させてから非活性にする(連打しても 1 回しか送られない)
+    setTimeout(function () { b.disabled = true; b.textContent = '処理中…'; }, 0);
+  });
+</script>
+<%- include('_footer') %>

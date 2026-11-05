@@ -1,0 +1,10 @@
+<%- include('_header', { title: '貸出完了', user }) %>
+<div class="card">
+  <div class="banner success" id="done"><span class="done-title">✔ <%= message %></span></div>
+  <% if (notice) { %><div class="banner warning" id="notice"><%= notice %></div><% } %>
+  <div class="actions">
+    <a class="button secondary" href="/lendings/new">貸出申請へ</a>
+    <a class="button" href="/returns">返却画面へ</a>
+  </div>
+</div>
+<%- include('_footer') %>

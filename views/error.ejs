@@ -1,0 +1,10 @@
+<%- include('_header', { title: 'エラー', user }) %>
+<div class="card">
+  <h1>エラー</h1>
+  <div class="banner error" id="error"><%= result.text %></div>
+  <div class="actions">
+    <a class="button secondary" href="/lendings/new">貸出申請へ</a>
+    <a class="button" href="/returns">返却画面へ</a>
+  </div>
+</div>
+<%- include('_footer') %>
